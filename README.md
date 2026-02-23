@@ -78,3 +78,8 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 1. 新增主题系统（暗色 / 亮色 / 暖色），macOS 与 Windows 版本均可在设置中切换  
 2. 主窗口最小宽度调整为 1000，避免内容拥挤  
 完整记录见：`CHANGELOG.md`
+
+**赞赏支持**  
+如果这个工具帮到了你，欢迎请我喝杯饮料。  
+
+![赞赏码](docs/donate.png)
