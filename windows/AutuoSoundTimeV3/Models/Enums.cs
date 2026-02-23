@@ -19,3 +19,10 @@ public enum AppTab
     Manual,
     Team
 }
+
+public enum AppTheme
+{
+    Dark,
+    Light,
+    Warm
+}

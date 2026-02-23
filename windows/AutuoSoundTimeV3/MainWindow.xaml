@@ -10,7 +10,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="#F7F7FA" BorderBrush="#E5E5EA" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{DynamicResource App.Sidebar}" BorderBrush="{DynamicResource App.Border}" BorderThickness="0,0,1,0">
             <StackPanel Margin="14" VerticalAlignment="Stretch">
                 <TextBlock Text="音频工具" FontWeight="Bold" FontSize="16" Margin="4,6,4,12" />
 
@@ -26,8 +26,8 @@
 
                 <Separator Margin="0,12" />
 
-                <TextBlock Text="时薪计算器" Foreground="#666" FontSize="12" />
-                <TextBlock Text="v3.3.0" Foreground="#999" FontSize="11" />
+                <TextBlock Text="时薪计算器" Foreground="{DynamicResource App.TextSecondary}" FontSize="12" />
+                <TextBlock Text="v3.3.0" Foreground="{DynamicResource App.TextSecondary}" FontSize="11" />
 
                 <StackPanel VerticalAlignment="Bottom" Margin="0,12,0,0">
                     <Button Content="设置" Command="{Binding OpenSettingsCommand}" Padding="10,6" />
@@ -41,11 +41,11 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DockPanel Grid.Row="0" LastChildFill="True" Background="#FFFFFF" Margin="0,0,0,1">
+            <DockPanel Grid.Row="0" LastChildFill="True" Background="{DynamicResource App.Panel}" Margin="0,0,0,1">
                 <TextBlock Text="" DockPanel.Dock="Left" />
             </DockPanel>
 
-            <Border Grid.Row="1" Background="#FFFFFF">
+            <Border Grid.Row="1" Background="{DynamicResource App.Panel}">
                 <ContentControl Content="{Binding CurrentViewModel}" Margin="16" />
             </Border>
         </Grid>

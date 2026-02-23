@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="设置" Width="420" Height="320"
         WindowStartupLocation="CenterOwner">
-    <Grid Margin="16">
+    <Grid Margin="16" xmlns:models="clr-namespace:AutoSoundTimeV3.Models">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -13,6 +13,16 @@
             <CheckBox Content="显示自动模式" IsChecked="{Binding ShowAutoMode}" Margin="0,4" />
             <CheckBox Content="显示手动模式" IsChecked="{Binding ShowManualMode}" Margin="0,4" />
             <CheckBox Content="显示团队模式" IsChecked="{Binding ShowTeamMode}" Margin="0,4" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock Text="主题" VerticalAlignment="Center" Width="50" />
+                <ComboBox SelectedValue="{Binding Theme}" SelectedValuePath="Tag" Width="140">
+                    <ComboBoxItem Content="深色" Tag="{x:Static models:AppTheme.Dark}" />
+                    <ComboBoxItem Content="浅色" Tag="{x:Static models:AppTheme.Light}" />
+                    <ComboBoxItem Content="暖色" Tag="{x:Static models:AppTheme.Warm}" />
+                </ComboBox>
+            </StackPanel>
+
             <Separator Margin="0,10" />
             <CheckBox Content="启用智能输入" IsChecked="{Binding EnableSmartInput}" Margin="0,4" />
             <CheckBox Content="显示秒数" IsChecked="{Binding ShowDurationInSeconds}" Margin="0,4" />

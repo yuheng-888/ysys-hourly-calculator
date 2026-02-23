@@ -9,7 +9,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Padding="10" BorderBrush="#E5E5EA" BorderThickness="1" CornerRadius="6">
+        <Border Grid.Row="0" Padding="10" BorderBrush="{DynamicResource App.Border}" Background="{DynamicResource App.Panel}" BorderThickness="1" CornerRadius="6">
             <WrapPanel>
                 <TextBlock Text="项目" VerticalAlignment="Center" />
                 <TextBox Text="{Binding ProjectName}" Width="120" Margin="6,0,10,0" />

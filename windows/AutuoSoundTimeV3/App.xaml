@@ -5,16 +5,67 @@
              xmlns:views="clr-namespace:AutoSoundTimeV3.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Default theme -->
+                <ResourceDictionary Source="Assets/Themes/Dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <DataTemplate DataType="{x:Type vm:AutoModeViewModel}">
-            <views:AutoModeView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ManualModeViewModel}">
-            <views:ManualModeView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:TeamSettlementViewModel}">
-            <views:TeamSettlementView />
-        </DataTemplate>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+            <DataTemplate DataType="{x:Type vm:AutoModeViewModel}">
+                <views:AutoModeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ManualModeViewModel}">
+                <views:ManualModeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:TeamSettlementViewModel}">
+                <views:TeamSettlementView />
+            </DataTemplate>
+
+            <Style TargetType="Window">
+                <Setter Property="Background" Value="{DynamicResource App.Background}" />
+                <Setter Property="Foreground" Value="{DynamicResource App.TextPrimary}" />
+            </Style>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource App.TextPrimary}" />
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="{DynamicResource App.Panel}" />
+                <Setter Property="Foreground" Value="{DynamicResource App.TextPrimary}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource App.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="Background" Value="{DynamicResource App.Panel}" />
+                <Setter Property="Foreground" Value="{DynamicResource App.TextPrimary}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource App.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="{DynamicResource App.PanelAlt}" />
+                <Setter Property="Foreground" Value="{DynamicResource App.TextPrimary}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource App.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="10,6" />
+            </Style>
+
+            <Style TargetType="ListView">
+                <Setter Property="Background" Value="{DynamicResource App.Panel}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource App.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+
+            <Style TargetType="DataGrid">
+                <Setter Property="Background" Value="{DynamicResource App.Panel}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource App.Border}" />
+                <Setter Property="RowBackground" Value="{DynamicResource App.Panel}" />
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource App.PanelAlt}" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

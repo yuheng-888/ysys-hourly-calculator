@@ -62,5 +62,18 @@ public class SettingsViewModel : ObservableObject
         set { if (_settings.SelectedTab == value) return; _settings.SelectedTab = value; Save(); RaisePropertyChanged(); }
     }
 
+    public AppTheme Theme
+    {
+        get => _settings.Theme;
+        set
+        {
+            if (_settings.Theme == value) return;
+            _settings.Theme = value;
+            Save();
+            ThemeManager.ApplyTheme(value);
+            RaisePropertyChanged();
+        }
+    }
+
     public void Save() => StorageService.Save("settings.json", _settings);
 }

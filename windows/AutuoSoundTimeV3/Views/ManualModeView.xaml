@@ -9,7 +9,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Padding="10" BorderBrush="#E5E5EA" BorderThickness="1" CornerRadius="6">
+        <Border Grid.Row="0" Padding="10" BorderBrush="{DynamicResource App.Border}" Background="{DynamicResource App.Panel}" BorderThickness="1" CornerRadius="6">
             <WrapPanel VerticalAlignment="Center">
                 <TextBlock Text="智能输入" VerticalAlignment="Center" />
                 <TextBox Text="{Binding SmartInput, UpdateSourceTrigger=PropertyChanged}" Width="120" Margin="6,0,10,0" />
@@ -51,7 +51,7 @@
             </ListView.View>
         </ListView>
 
-        <Border Grid.Row="2" Padding="10" BorderBrush="#E5E5EA" BorderThickness="1" CornerRadius="6">
+        <Border Grid.Row="2" Padding="10" BorderBrush="{DynamicResource App.Border}" Background="{DynamicResource App.Panel}" BorderThickness="1" CornerRadius="6">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="合计" Margin="0,0,6,0" />
                 <TextBlock Text="{Binding TotalAmountText}" FontWeight="Bold" />

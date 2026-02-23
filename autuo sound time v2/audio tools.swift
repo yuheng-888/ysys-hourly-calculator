@@ -11,8 +11,120 @@ import AVFoundation
 import AppKit
 import UniformTypeIdentifiers
 
+// MARK: - Theme
+enum AppTheme: String, CaseIterable, Identifiable {
+    case dark
+    case light
+    case warm
+    
+    var id: String { rawValue }
+    
+    var displayName: String {
+        switch self {
+        case .dark: return "深色"
+        case .light: return "浅色"
+        case .warm: return "暖色"
+        }
+    }
+    
+    var palette: ThemePalette {
+        switch self {
+        case .dark:
+            return ThemePalette(
+                id: rawValue,
+                name: displayName,
+                colorScheme: .dark,
+                background: Color(hex: "#0F1115"),
+                sidebar: Color(hex: "#141821"),
+                panel: Color(hex: "#171A21"),
+                panelAlt: Color(hex: "#1D2230"),
+                border: Color(hex: "#2A2F3A"),
+                text: Color(hex: "#E5E7EB"),
+                textSecondary: Color(hex: "#A1A1AA"),
+                accent: Color(hex: "#7C6FFF"),
+                accent2: Color(hex: "#C084FC"),
+                shadow: Color.black.opacity(0.35)
+            )
+        case .light:
+            return ThemePalette(
+                id: rawValue,
+                name: displayName,
+                colorScheme: .light,
+                background: Color(hex: "#F5F7FA"),
+                sidebar: Color(hex: "#F7F7FA"),
+                panel: Color.white,
+                panelAlt: Color(hex: "#EEF2FF"),
+                border: Color(hex: "#E5E7EB"),
+                text: Color(hex: "#111827"),
+                textSecondary: Color(hex: "#6B7280"),
+                accent: Color(hex: "#4F46E5"),
+                accent2: Color(hex: "#A855F7"),
+                shadow: Color.black.opacity(0.12)
+            )
+        case .warm:
+            return ThemePalette(
+                id: rawValue,
+                name: displayName,
+                colorScheme: .light,
+                background: Color(hex: "#FFF7F0"),
+                sidebar: Color(hex: "#FFF3E4"),
+                panel: Color(hex: "#FFF1DF"),
+                panelAlt: Color(hex: "#FDE9D2"),
+                border: Color(hex: "#E9D8C5"),
+                text: Color(hex: "#3B2F2A"),
+                textSecondary: Color(hex: "#8B6F5A"),
+                accent: Color(hex: "#E76F51"),
+                accent2: Color(hex: "#F4A261"),
+                shadow: Color.black.opacity(0.12)
+            )
+        }
+    }
+}
+
+struct ThemePalette: Equatable {
+    let id: String
+    let name: String
+    let colorScheme: ColorScheme
+    let background: Color
+    let sidebar: Color
+    let panel: Color
+    let panelAlt: Color
+    let border: Color
+    let text: Color
+    let textSecondary: Color
+    let accent: Color
+    let accent2: Color
+    let shadow: Color
+}
+
+private struct ThemePaletteKey: EnvironmentKey {
+    static let defaultValue = AppTheme.dark.palette
+}
+
+extension EnvironmentValues {
+    var themePalette: ThemePalette {
+        get { self[ThemePaletteKey.self] }
+        set { self[ThemePaletteKey.self] = newValue }
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        var hexValue = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        if hexValue.count == 6 { hexValue = "FF" + hexValue }
+        var int: UInt64 = 0
+        Scanner(string: hexValue).scanHexInt64(&int)
+        let a = Double((int >> 24) & 0xFF) / 255.0
+        let r = Double((int >> 16) & 0xFF) / 255.0
+        let g = Double((int >> 8) & 0xFF) / 255.0
+        let b = Double(int & 0xFF) / 255.0
+        self = Color(.sRGB, red: r, green: g, blue: b, opacity: a)
+    }
+}
+
 // MARK: - 自定义按钮样式（靛蓝/紫色渐变主题）
 struct RoundedBorderedButtonStyle: ButtonStyle {
+    @Environment(\.themePalette) private var theme
     // 圆角半径
     var cornerRadius: CGFloat = 12
     // 按下时的缩放比例
@@ -26,15 +138,15 @@ struct RoundedBorderedButtonStyle: ButtonStyle {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.indigo, lineWidth: 1)
+                    .stroke(theme.accent, lineWidth: 1)
                     .background(
                         RoundedRectangle(cornerRadius: cornerRadius)
-                            .fill(Color.indigo.opacity(0.08))
+                            .fill(theme.accent.opacity(0.08))
                     )
             )
-            .foregroundColor(.indigo)
+            .foregroundColor(theme.accent)
             // 添加微妙阴影增加层次感
-            .shadow(color: .indigo.opacity(0.15), radius: 4, y: 2)
+            .shadow(color: theme.accent.opacity(0.15), radius: 4, y: 2)
             .scaleEffect(configuration.isPressed ? pressedScale : 1.0)
             .opacity(configuration.isPressed ? pressedOpacity : 1.0)
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
@@ -42,6 +154,7 @@ struct RoundedBorderedButtonStyle: ButtonStyle {
 }
 
 struct RoundedBorderedProminentButtonStyle: ButtonStyle {
+    @Environment(\.themePalette) private var theme
     // 圆角半径
     var cornerRadius: CGFloat = 12
     // 按下时的缩放比例
@@ -49,7 +162,7 @@ struct RoundedBorderedProminentButtonStyle: ButtonStyle {
     // 按下时的透明度
     var pressedOpacity: Double = 0.9
     // 背景色（保留兼容性但默认使用渐变）
-    var backgroundColor: Color = .indigo
+    var backgroundColor: Color = .clear
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -58,7 +171,7 @@ struct RoundedBorderedProminentButtonStyle: ButtonStyle {
             .background(
                 // 使用靛蓝到紫色的渐变背景
                 LinearGradient(
-                    colors: [.indigo, .purple],
+                    colors: [theme.accent, theme.accent2],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -66,7 +179,7 @@ struct RoundedBorderedProminentButtonStyle: ButtonStyle {
             )
             .foregroundColor(.white)
             // 渐变阴影增强立体感
-            .shadow(color: .indigo.opacity(0.3), radius: 6, y: 3)
+            .shadow(color: theme.accent.opacity(0.3), radius: 6, y: 3)
             .scaleEffect(configuration.isPressed ? pressedScale : 1.0)
             .opacity(configuration.isPressed ? pressedOpacity : 1.0)
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
@@ -75,12 +188,13 @@ struct RoundedBorderedProminentButtonStyle: ButtonStyle {
 
 // 侧边栏按钮样式（带选中指示条）
 struct SidebarButtonStyle: ButtonStyle {
+    @Environment(\.themePalette) private var theme
     var isSelected: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(12)
-            .background(isSelected ? Color.indigo.opacity(0.08) : Color.clear)
+            .background(isSelected ? theme.accent.opacity(0.08) : Color.clear)
             .cornerRadius(12)
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
             .opacity(configuration.isPressed ? 0.9 : 1.0)
@@ -285,9 +399,18 @@ class AppSettings: ObservableObject {
     @AppStorage("selectedTab") var selectedTab: String = "auto"
     @AppStorage("enableSmartInput") var enableSmartInput = true
     @AppStorage("showDurationInSeconds") var showDurationInSeconds = true
+    @AppStorage("selectedTheme") var selectedTheme: String = AppTheme.dark.rawValue
     // 费率记忆：保存上次使用的费率
     @AppStorage("lastHourlyRate") var lastHourlyRate: String = ""
     @AppStorage("lastMinuteRate") var lastMinuteRate: String = ""
+    
+    var theme: AppTheme {
+        AppTheme(rawValue: selectedTheme) ?? .dark
+    }
+    
+    var themePalette: ThemePalette {
+        theme.palette
+    }
 }
 
 // MARK: - 共享应用状态（支持 JSON 持久化到 UserDefaults）
@@ -336,15 +459,19 @@ struct AudioDurationCalculatorApp: App {
             MainContentView()
                 .environmentObject(appState)
                 .environmentObject(appSettings)
+                .environment(\.themePalette, appSettings.themePalette)
                 .sheet(isPresented: $appState.showSettingsView) {
                     SettingsView()
                         .environmentObject(appState)
                         .environmentObject(appSettings)
+                        .environment(\.themePalette, appSettings.themePalette)
                 }
                 .sheet(isPresented: $appState.showAboutView) {
                     AboutView()
+                        .environment(\.themePalette, appSettings.themePalette)
                 }
         }
+        .preferredColorScheme(appSettings.themePalette.colorScheme)
         .windowStyle(.titleBar)
         .commands {
             CommandGroup(after: .appInfo) {
@@ -410,6 +537,7 @@ extension Notification.Name {
 struct SettingsView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appSettings: AppSettings
+    @Environment(\.themePalette) private var theme
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -448,6 +576,19 @@ struct SettingsView: View {
                             settingsToggle("显示手动模式", isOn: $appSettings.showManualMode)
                             Divider()
                             settingsToggle("显示团队模式", isOn: $appSettings.showTeamMode)
+                            Divider()
+                            HStack {
+                                Text("主题")
+                                Spacer()
+                                Picker("", selection: $appSettings.selectedTheme) {
+                                    ForEach(AppTheme.allCases) { theme in
+                                        Text(theme.displayName).tag(theme.rawValue)
+                                    }
+                                }
+                                .labelsHidden()
+                                .pickerStyle(.menu)
+                                .tint(theme.accent)
+                            }
                         }
                     }
                     
@@ -501,14 +642,14 @@ struct SettingsView: View {
             Label(title, systemImage: icon)
                 .font(.headline)
                 .foregroundStyle(
-                    LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                 )
             
             content()
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial)
+        .background(theme.panel)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
     }
@@ -517,7 +658,7 @@ struct SettingsView: View {
     private func settingsToggle(_ title: String, isOn: Binding<Bool>) -> some View {
         Toggle(title, isOn: isOn)
             .toggleStyle(.switch)
-            .tint(.indigo)
+            .tint(theme.accent)
     }
     
     private func resetSettings() {
@@ -532,6 +673,7 @@ struct SettingsView: View {
 
 // MARK: - 关于视图（紧凑排版 + 渐变背景 + SF Symbol 图标列表）
 struct AboutView: View {
+    @Environment(\.themePalette) private var theme
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -555,7 +697,7 @@ struct AboutView: View {
                 ZStack {
                     Circle()
                         .fill(
-                            LinearGradient(colors: [.indigo.opacity(0.2), .purple.opacity(0.15)],
+                            LinearGradient(colors: [theme.accent.opacity(0.2), theme.accent2.opacity(0.15)],
                                            startPoint: .topLeading, endPoint: .bottomTrailing)
                         )
                         .frame(width: 100, height: 100)
@@ -571,7 +713,7 @@ struct AboutView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 
                 Text("版本 3.3.0")
@@ -591,13 +733,13 @@ struct AboutView: View {
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(
-                            LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                            LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                         )
                     
-                    featureRow(icon: "waveform.circle.fill", text: "自动计算多个音频文件的总时长", color: .indigo)
+                    featureRow(icon: "waveform.circle.fill", text: "自动计算多个音频文件的总时长", color: theme.accent)
                     featureRow(icon: "dollarsign.circle.fill", text: "支持时薪和分钟费率计算", color: .green)
                     featureRow(icon: "hand.tap.fill", text: "手动输入工作时间计算薪资", color: .orange)
-                    featureRow(icon: "person.3.fill", text: "团队项目结算管理", color: .purple)
+                    featureRow(icon: "person.3.fill", text: "团队项目结算管理", color: theme.accent2)
                     featureRow(icon: "lightbulb.fill", text: "智能时间输入功能", color: .yellow)
                     featureRow(icon: "square.and.arrow.down", text: "CSV 导出团队结算数据", color: .blue)
                 }
@@ -644,6 +786,7 @@ struct AboutView: View {
 struct MainContentView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appSettings: AppSettings
+    @Environment(\.themePalette) private var theme
     
     @State private var sidebarCollapsed = false
     @State private var triggerCalculation = false
@@ -679,7 +822,7 @@ struct MainContentView: View {
                         Image(systemName: sidebarCollapsed ? "sidebar.right" : "sidebar.left")
                             .font(.system(size: 16, weight: .bold))
                             .padding(8)
-                            .background(Color.indigo.opacity(0.1))
+                            .background(theme.accent.opacity(0.1))
                             .clipShape(Circle())
                     }
                     .buttonStyle(.plain)
@@ -724,6 +867,7 @@ struct MainContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .calculateDurationsNotification)) { _ in
             triggerCalculation = true
         }
+        .background(theme.background)
     }
     
     // 侧边栏视图（渐变头部 + 选中指示条）
@@ -734,12 +878,12 @@ struct MainContentView: View {
                 Image(systemName: "music.note.house.fill")
                     .font(.system(size: 16))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 Text("音频工具")
                     .font(.headline)
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 Spacer()
             }
@@ -747,7 +891,7 @@ struct MainContentView: View {
             .padding(.vertical, 14)
             .background(
                 LinearGradient(
-                    colors: [.indigo.opacity(0.1), .purple.opacity(0.05)],
+                    colors: [theme.accent.opacity(0.1), theme.accent2.opacity(0.05)],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -785,7 +929,7 @@ struct MainContentView: View {
             .padding(.bottom, 12)
         }
         .frame(maxHeight: .infinity)
-        .background(Color(.controlBackgroundColor))
+        .background(theme.sidebar)
         .overlay(
             Rectangle()
                 .frame(width: 1)
@@ -832,7 +976,7 @@ struct MainContentView: View {
                 RoundedRectangle(cornerRadius: 2)
                     .fill(
                         isSelected
-                        ? AnyShapeStyle(LinearGradient(colors: [.indigo, .purple], startPoint: .top, endPoint: .bottom))
+                        ? AnyShapeStyle(LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .top, endPoint: .bottom))
                         : AnyShapeStyle(Color.clear)
                     )
                     .frame(width: 3, height: 20)
@@ -841,7 +985,7 @@ struct MainContentView: View {
                 Image(systemName: systemImage)
                     .font(.system(size: 16))
                     .frame(width: 24)
-                    .foregroundColor(isSelected ? .indigo : .secondary)
+                    .foregroundColor(isSelected ? theme.accent : .secondary)
                 
                 Text(title)
                     .font(.subheadline)
@@ -854,7 +998,7 @@ struct MainContentView: View {
             .padding(.trailing, 12)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.indigo.opacity(0.08) : (isHovered ? Color.indigo.opacity(0.04) : Color.clear))
+                    .fill(isSelected ? theme.accent.opacity(0.08) : (isHovered ? theme.accent.opacity(0.04) : Color.clear))
             )
             .contentShape(Rectangle())
         }
@@ -916,6 +1060,7 @@ struct AutoModeCalculatorView: View {
     
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appSettings: AppSettings
+    @Environment(\.themePalette) private var theme
     
     var body: some View {
         ScrollView {
@@ -934,13 +1079,13 @@ struct AutoModeCalculatorView: View {
                 if showSettlementSuccess {
                     HStack(spacing: 0) {
                         RoundedRectangle(cornerRadius: 2)
-                            .fill(Color.indigo)
+                            .fill(theme.accent)
                             .frame(width: 4)
                             .padding(.vertical, 4)
                         
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(theme.accent)
                                 .font(.title2)
                             
                             Text("已成功添加到团队结算")
@@ -960,9 +1105,9 @@ struct AutoModeCalculatorView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 10)
                     }
-                    .background(Color.indigo.opacity(0.08))
+                    .background(theme.accent.opacity(0.08))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .shadow(color: .indigo.opacity(0.1), radius: 3, y: 1)
+                    .shadow(color: theme.accent.opacity(0.1), radius: 3, y: 1)
                     .padding(.bottom, 6)
                     .transition(.opacity)
                     .animation(.easeInOut, value: showSettlementSuccess)
@@ -1014,7 +1159,7 @@ struct AutoModeCalculatorView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.15), .purple.opacity(0.1)],
+                        LinearGradient(colors: [theme.accent.opacity(0.15), theme.accent2.opacity(0.1)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 52, height: 52)
@@ -1022,7 +1167,7 @@ struct AutoModeCalculatorView: View {
                 Image(systemName: "waveform.badge.plus")
                     .font(.system(size: 24))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -1031,7 +1176,7 @@ struct AutoModeCalculatorView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 
                 Text("拖放或导入音频文件，自动计算总时长和薪资 · 支持批量处理")
@@ -1047,20 +1192,20 @@ struct AutoModeCalculatorView: View {
         VStack(spacing: 16) {
             ProgressView(value: Double(processedCount), total: Double(audioFiles.count))
                 .progressViewStyle(.linear)
-                .tint(.indigo)
+                .tint(theme.accent)
                 .frame(height: 8)
             
             HStack {
                 Text("处理文件中...")
                     .font(.footnote)
-                    .foregroundColor(.indigo)
+                    .foregroundColor(theme.accent)
                     .opacity(0.8)
                 
                 Spacer()
                 
                 Text("\(processedCount)/\(audioFiles.count)")
                     .font(.footnote.monospacedDigit())
-                    .foregroundColor(.indigo)
+                    .foregroundColor(theme.accent)
                     .fontWeight(.medium)
             }
             
@@ -1071,9 +1216,9 @@ struct AutoModeCalculatorView: View {
             }
         }
         .padding(16)
-        .background(.ultraThinMaterial)
+        .background(theme.panel)
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .indigo.opacity(0.08), radius: 4, y: 2)
+        .shadow(color: theme.accent.opacity(0.08), radius: 4, y: 2)
     }
     
     // 导入成功横幅（柔和绿色 + 左侧强调条）
@@ -1145,7 +1290,7 @@ struct AutoModeCalculatorView: View {
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(Color.indigo.opacity(0.08))
+                    .background(theme.accent.opacity(0.08))
                     .clipShape(Capsule())
             }
             
@@ -1201,7 +1346,7 @@ struct AutoModeCalculatorView: View {
                             }
                             .padding(.vertical, 6)
                             // 交替行背景色
-                            .listRowBackground(index % 2 == 0 ? Color.clear : Color.indigo.opacity(0.02))
+                            .listRowBackground(index % 2 == 0 ? Color.clear : theme.accent.opacity(0.02))
                         }
                     }
                 }
@@ -1218,7 +1363,7 @@ struct AutoModeCalculatorView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.12), .purple.opacity(0.08)],
+                        LinearGradient(colors: [theme.accent.opacity(0.12), theme.accent2.opacity(0.08)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 80, height: 80)
@@ -1226,7 +1371,7 @@ struct AutoModeCalculatorView: View {
                 Image(systemName: "folder.badge.plus")
                     .font(.system(size: 36))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -1238,13 +1383,13 @@ struct AutoModeCalculatorView: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, minHeight: 200)
-        .background(Color.indigo.opacity(0.03))
+        .background(theme.accent.opacity(0.03))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         // 虚线边框
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [8, 4]))
-                .foregroundColor(.indigo.opacity(0.3))
+                .foregroundColor(theme.accent.opacity(0.3))
         )
         // 拖放处理
         .onDrop(of: [.fileURL], isTargeted: nil) { providers in
@@ -1345,7 +1490,7 @@ struct AutoModeCalculatorView: View {
                                 .frame(minWidth: 120)
                         }
                         .buttonStyle(RoundedBorderedProminentButtonStyle())
-                        .tint(.indigo)
+                        .tint(theme.accent)
                         .disabled(totalDuration == 0)
                     }
                 }
@@ -1371,7 +1516,7 @@ struct AutoModeCalculatorView: View {
                 }
             }
             .padding(16)
-            .background(.ultraThinMaterial)
+            .background(theme.panel)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
         }
@@ -1392,7 +1537,7 @@ struct AutoModeCalculatorView: View {
                     }
                 }) {
                     Image(systemName: showSettlementOptions ? "chevron.up" : "chevron.down")
-                        .foregroundColor(.indigo)
+                        .foregroundColor(theme.accent)
                 }
             }
             
@@ -1423,7 +1568,7 @@ struct AutoModeCalculatorView: View {
                             addToTeamSettlement()
                         }
                         .buttonStyle(RoundedBorderedProminentButtonStyle())
-                        .tint(.indigo)
+                        .tint(theme.accent)
                         .disabled(projectName.isEmpty || producer.isEmpty || totalDuration == 0)
                     }
                     
@@ -1467,7 +1612,7 @@ struct AutoModeCalculatorView: View {
                     }
                 }
                 .padding(16)
-                .background(.ultraThinMaterial)
+                .background(theme.panel)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
             }
@@ -1668,6 +1813,7 @@ struct AutoModeCalculatorView: View {
 // MARK: - 手动模式视图（手动输入时间 + 薪资计算）
 struct ManualModeCalculatorView: View {
     @EnvironmentObject private var appSettings: AppSettings
+    @Environment(\.themePalette) private var theme
     
     @State private var timeEntries: [TimeEntryModel] = []
     @State private var selectedUnit: DurationUnit = .minute
@@ -1715,7 +1861,7 @@ struct ManualModeCalculatorView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.15), .purple.opacity(0.1)],
+                        LinearGradient(colors: [theme.accent.opacity(0.15), theme.accent2.opacity(0.1)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 52, height: 52)
@@ -1723,7 +1869,7 @@ struct ManualModeCalculatorView: View {
                 Image(systemName: "hand.tap.fill")
                     .font(.system(size: 24))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -1732,7 +1878,7 @@ struct ManualModeCalculatorView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 
                 Text("为有声书或其他项目手动输入工作时长")
@@ -1773,7 +1919,7 @@ struct ManualModeCalculatorView: View {
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(Color.indigo.opacity(0.08))
+                    .background(theme.accent.opacity(0.08))
                     .clipShape(Capsule())
             }
             
@@ -1784,7 +1930,7 @@ struct ManualModeCalculatorView: View {
                     ForEach(timeEntries) { entry in
                         HStack {
                             Image(systemName: "clock.fill")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(theme.accent)
                             
                             VStack(alignment: .leading) {
                                 Text(entry.formattedTime)
@@ -1825,7 +1971,7 @@ struct ManualModeCalculatorView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.12), .purple.opacity(0.08)],
+                        LinearGradient(colors: [theme.accent.opacity(0.12), theme.accent2.opacity(0.08)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 80, height: 80)
@@ -1833,7 +1979,7 @@ struct ManualModeCalculatorView: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 36))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -1845,12 +1991,12 @@ struct ManualModeCalculatorView: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, minHeight: 200)
-        .background(Color.indigo.opacity(0.03))
+        .background(theme.accent.opacity(0.03))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [8, 4]))
-                .foregroundColor(.indigo.opacity(0.3))
+                .foregroundColor(theme.accent.opacity(0.3))
         )
     }
     
@@ -1906,7 +2052,7 @@ struct ManualModeCalculatorView: View {
                 .frame(minWidth: 100)
             }
             .padding(16)
-            .background(.ultraThinMaterial)
+            .background(theme.panel)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
         }
@@ -1969,7 +2115,7 @@ struct ManualModeCalculatorView: View {
                         VStack(alignment: .leading, spacing: 15) {
                             Label("智能输入模式", systemImage: "lightbulb.fill")
                                 .font(.headline)
-                                .foregroundColor(.indigo)
+                                .foregroundColor(theme.accent)
                             
                             HStack {
                                 TextField("输入时间 (如 112233)", text: $smartInput)
@@ -1990,7 +2136,7 @@ struct ManualModeCalculatorView: View {
                                         .foregroundColor(.primary)
                                         .padding(10)
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.indigo.opacity(0.08))
+                                        .background(theme.accent.opacity(0.08))
                                         .cornerRadius(8)
                                 }
                             } else {
@@ -2193,6 +2339,7 @@ struct ManualModeCalculatorView: View {
 struct TeamSettlementView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appSettings: AppSettings
+    @Environment(\.themePalette) private var theme
     
     @State private var uiState = UIState()
     @State private var showCopySuccess = false
@@ -2212,7 +2359,7 @@ struct TeamSettlementView: View {
                             .frame(minWidth: 150)
                     }
                     .buttonStyle(RoundedBorderedProminentButtonStyle())
-                    .tint(.indigo)
+                    .tint(theme.accent)
                     
                     Button(action: copyToClipboard) {
                         Label("一键复制", systemImage: "doc.on.doc")
@@ -2288,7 +2435,7 @@ struct TeamSettlementView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.15), .purple.opacity(0.1)],
+                        LinearGradient(colors: [theme.accent.opacity(0.15), theme.accent2.opacity(0.1)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 52, height: 52)
@@ -2296,7 +2443,7 @@ struct TeamSettlementView: View {
                 Image(systemName: "person.3.fill")
                     .font(.system(size: 22))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -2305,7 +2452,7 @@ struct TeamSettlementView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
                 
                 Text("管理团队项目结算，一键复制结算信息")
@@ -2322,7 +2469,7 @@ struct TeamSettlementView: View {
             ZStack {
                 Circle()
                     .fill(
-                        LinearGradient(colors: [.indigo.opacity(0.12), .purple.opacity(0.08)],
+                        LinearGradient(colors: [theme.accent.opacity(0.12), theme.accent2.opacity(0.08)],
                                        startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .frame(width: 80, height: 80)
@@ -2330,7 +2477,7 @@ struct TeamSettlementView: View {
                 Image(systemName: "person.3.fill")
                     .font(.system(size: 36))
                     .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [theme.accent, theme.accent2], startPoint: .leading, endPoint: .trailing)
                     )
             }
             
@@ -2342,12 +2489,12 @@ struct TeamSettlementView: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, minHeight: 300)
-        .background(Color.indigo.opacity(0.03))
+        .background(theme.accent.opacity(0.03))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [8, 4]))
-                .foregroundColor(.indigo.opacity(0.3))
+                .foregroundColor(theme.accent.opacity(0.3))
         )
     }
 
@@ -2365,7 +2512,7 @@ struct TeamSettlementView: View {
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(Color.indigo.opacity(0.08))
+                    .background(theme.accent.opacity(0.08))
                     .clipShape(Capsule())
             }
             
@@ -2375,7 +2522,7 @@ struct TeamSettlementView: View {
                     headerRow
                         .padding(.vertical, 8)
                         .padding(.horizontal, 8)
-                        .background(Color.indigo.opacity(0.05))
+                        .background(theme.accent.opacity(0.05))
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                     
                     // 数据行
@@ -2383,7 +2530,7 @@ struct TeamSettlementView: View {
                         entryRow(entry: entry)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 8)
-                            .background(index % 2 == 0 ? Color.clear : Color.indigo.opacity(0.02))
+                            .background(index % 2 == 0 ? Color.clear : theme.accent.opacity(0.02))
                             .contextMenu {
                                 Button(role: .destructive) {
                                     deleteEntry(id: entry.id)
@@ -2422,7 +2569,7 @@ struct TeamSettlementView: View {
         }
         .font(.subheadline)
         .fontWeight(.medium)
-        .foregroundColor(.indigo.opacity(0.8))
+        .foregroundColor(theme.accent.opacity(0.8))
     }
 
     // 数据行
@@ -2518,13 +2665,13 @@ struct TeamSettlementView: View {
             .padding(16)
             .background(
                 LinearGradient(
-                    colors: [.indigo.opacity(0.06), .purple.opacity(0.04)],
+                    colors: [theme.accent.opacity(0.06), theme.accent2.opacity(0.04)],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
             )
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(color: .indigo.opacity(0.08), radius: 4, y: 2)
+            .shadow(color: theme.accent.opacity(0.08), radius: 4, y: 2)
         }
     }
 
@@ -2595,7 +2742,7 @@ struct TeamSettlementView: View {
                             VStack(alignment: .leading, spacing: 15) {
                                 Label("智能输入模式", systemImage: "lightbulb.fill")
                                     .font(.headline)
-                                    .foregroundColor(.indigo)
+                                    .foregroundColor(theme.accent)
                                 
                                 HStack {
                                     TextField("输入时间 (如 112233)", text: $uiState.smartInput)
@@ -2616,7 +2763,7 @@ struct TeamSettlementView: View {
                                             .foregroundColor(.primary)
                                             .padding(10)
                                             .frame(maxWidth: .infinity)
-                                            .background(Color.indigo.opacity(0.08))
+                                            .background(theme.accent.opacity(0.08))
                                             .cornerRadius(8)
                                     }
                                 } else {

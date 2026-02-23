@@ -10,4 +10,5 @@ public class AppSettings
     public string LastHourlyRate { get; set; } = string.Empty;
     public string LastMinuteRate { get; set; } = string.Empty;
     public AppTab SelectedTab { get; set; } = AppTab.Auto;
+    public AppTheme Theme { get; set; } = AppTheme.Dark;
 }
