@@ -1,0 +1,25 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+change-template: "- $TITLE (@$AUTHOR)"
+no-changes-template: "- 无"
+
+categories:
+  - title: "功能"
+    labels:
+      - "feature"
+      - "enhancement"
+  - title: "修复"
+    labels:
+      - "bug"
+      - "fix"
+  - title: "文档"
+    labels:
+      - "docs"
+  - title: "构建/CI"
+    labels:
+      - "ci"
+      - "build"
+
+template: |
+  ## 更新内容
+  $CHANGES

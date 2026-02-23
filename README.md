@@ -81,3 +81,7 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 **Release 自动截图**  
 把截图放到：`.github/release-assets/release-screenshot.png`  
 发布时会自动附加到 Release 并展示。
+
+**Release 自动更新日志（Draft）**  
+已启用 Release Drafter：`.github/workflows/release-drafter.yml`  
+发布前会自动生成草稿更新日志。
