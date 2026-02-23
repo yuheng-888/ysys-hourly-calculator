@@ -73,15 +73,6 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 2. 为什么 Actions 下载的是文件夹？  
 因为是完整的运行目录，解压后直接双击 `.exe` 即可。
 
-**GitHub Actions**  
-工作流：  
-1. `windows-build.yml`（仅构建 Windows）  
-2. `release.yml`（自动构建 + 生成 Release）  
-
-**Release 自动截图**  
-把截图放到：`.github/release-assets/release-screenshot.png`  
-发布时会自动附加到 Release 并展示。
-
-**Release 自动更新日志（Draft）**  
-已启用 Release Drafter：`.github/workflows/release-drafter.yml`  
-发布前会自动生成草稿更新日志。
+**说明**  
+README 面向使用者，尽量保持简洁。  
+如果需要构建/发布说明，请查看项目内部文档。

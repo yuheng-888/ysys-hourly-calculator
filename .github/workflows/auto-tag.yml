@@ -1,0 +1,61 @@
+name: Auto Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute Next Version
+        id: ver
+        run: |
+          set -e
+          latest=$(git tag -l 'v*' --sort=-v:refname | head -n 1)
+          if [ -z "$latest" ]; then
+            latest="v0.1.0"
+          fi
+          ver=${latest#v}
+          IFS='.' read -r major minor patch <<< "$ver"
+          bump="${{ inputs.bump }}"
+          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+            bump="patch"
+          fi
+          case "$bump" in
+            major)
+              major=$((major+1)); minor=0; patch=0;;
+            minor)
+              minor=$((minor+1)); patch=0;;
+            patch|*)
+              patch=$((patch+1));;
+          esac
+          next="v${major}.${minor}.${patch}"
+          echo "next=${next}" >> $GITHUB_OUTPUT
+
+      - name: Create Tag
+        run: |
+          tag="${{ steps.ver.outputs.next }}"
+          git tag "$tag"
+          git push origin "$tag"
