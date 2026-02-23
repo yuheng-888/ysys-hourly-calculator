@@ -22,7 +22,7 @@
 
 1. 打开终端，进入项目目录  
 ```
-cd "/Users/luyuyuan/Desktop/yisheng-scrm/autuo sound time v2"
+cd "<你的项目目录>"
 ```
 2. 生成安装包  
 ```
