@@ -72,7 +72,3 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 
 2. 为什么 Actions 下载的是文件夹？  
 因为是完整的运行目录，解压后直接双击 `.exe` 即可。
-
-**说明**  
-README 面向使用者，尽量保持简洁。  
-如果需要构建/发布说明，请查看项目内部文档。
