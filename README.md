@@ -74,5 +74,10 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 因为是完整的运行目录，解压后直接双击 `.exe` 即可。
 
 **GitHub Actions**  
-工作流：`.github/workflows/windows-build.yml`  
-产物：Win x64 / Win arm64
+工作流：  
+1. `windows-build.yml`（仅构建 Windows）  
+2. `release.yml`（自动构建 + 生成 Release）  
+
+**Release 自动截图**  
+把截图放到：`.github/release-assets/release-screenshot.png`  
+发布时会自动附加到 Release 并展示。

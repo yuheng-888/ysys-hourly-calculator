@@ -1,0 +1,138 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g., v3.3.0)'
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        runtime: [win-x64, win-arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore "./windows/AutuoSoundTimeV3/AutuoSoundTimeV3.csproj"
+
+      - name: Publish
+        run: >-
+          dotnet publish "./windows/AutuoSoundTimeV3/AutuoSoundTimeV3.csproj"
+          -c Release -r ${{ matrix.runtime }}
+          --self-contained true
+          /p:PublishSingleFile=true
+          /p:PublishTrimmed=false
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutuoSoundTimeV3-${{ matrix.runtime }}
+          path: windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/${{ matrix.runtime }}/publish
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build PKG
+        run: bash make-pkg.sh
+
+      - name: Upload PKG
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-pkg
+          path: '*.pkg'
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-macos]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Prepare Release Notes
+        id: prep
+        run: |
+          set -e
+          TAG="${GITHUB_REF_NAME}"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          fi
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+          # zip Windows artifacts
+          mkdir -p release-bundles
+          for dir in release-assets/AutuoSoundTimeV3-win-*; do
+            [ -d "$dir" ] || continue
+            name=$(basename "$dir")
+            zip -r "release-bundles/${name}.zip" "$dir" >/dev/null
+          done
+
+          # copy macOS pkg
+          find release-assets/macos-pkg -maxdepth 1 -type f -name "*.pkg" -exec cp {} release-bundles/ \;
+
+          # optional screenshot
+          SCREENSHOT_PATH=".github/release-assets/release-screenshot.png"
+          SCREENSHOT_SECTION="截图未提供。可将截图放到 ${SCREENSHOT_PATH}，发布时会自动附加。"
+          if [ -f "${SCREENSHOT_PATH}" ]; then
+            cp "${SCREENSHOT_PATH}" release-bundles/release-screenshot.png
+            SCREENSHOT_SECTION="![screenshot](https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/release-screenshot.png)"
+          fi
+
+          # build SHA256 section
+          SHA256_SECTION=""
+          for f in release-bundles/*; do
+            [ -f "$f" ] || continue
+            sha=$(sha256sum "$f" | awk '{print $1}')
+            name=$(basename "$f")
+            SHA256_SECTION+="- ${name}\n  - ${sha}\n"
+          done
+
+          export TAG
+          export SCREENSHOT_SECTION
+          export SHA256_SECTION
+          python3 - <<'PY'
+import os
+import pathlib
+
+template = pathlib.Path('.github/release-notes-template.md').read_text(encoding='utf-8')
+version = os.environ.get('TAG', 'v0.0.0')
+screenshot = os.environ.get('SCREENSHOT_SECTION', '')
+sha256 = os.environ.get('SHA256_SECTION', '')
+body = template.replace('{{VERSION}}', version).replace('{{SCREENSHOT_SECTION}}', screenshot).replace('{{SHA256_SECTION}}', sha256)
+pathlib.Path('release_body.md').write_text(body, encoding='utf-8')
+PY
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.prep.outputs.tag }}
+          name: ${{ steps.prep.outputs.tag }}
+          body_path: release_body.md
+          files: |
+            release-bundles/**
+          target_commitish: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
