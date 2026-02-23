@@ -1,0 +1,58 @@
+<UserControl x:Class="AutoSoundTimeV3.Views.TeamSettlementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:AutoSoundTimeV3.Models">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Padding="10" BorderBrush="#E5E5EA" BorderThickness="1" CornerRadius="6">
+            <WrapPanel>
+                <TextBlock Text="项目" VerticalAlignment="Center" />
+                <TextBox Text="{Binding ProjectName}" Width="120" Margin="6,0,10,0" />
+
+                <TextBlock Text="制作人" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Producer}" Width="100" Margin="6,0,10,0" />
+
+                <TextBlock Text="日期" VerticalAlignment="Center" />
+                <DatePicker SelectedDate="{Binding Date}" Width="120" Margin="6,0,10,0" />
+
+                <TextBlock Text="时" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Hours}" Width="40" Margin="6,0,6,0" />
+                <TextBlock Text="分" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Minutes}" Width="40" Margin="6,0,6,0" />
+                <TextBlock Text="秒" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Seconds}" Width="40" Margin="6,0,10,0" />
+
+                <TextBlock Text="金额" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Amount}" Width="80" Margin="6,0,10,0" />
+
+                <TextBlock Text="方式" VerticalAlignment="Center" />
+                <ComboBox SelectedValue="{Binding Method}" SelectedValuePath="Tag" Width="120" Margin="6,0,10,0">
+                    <ComboBoxItem Content="时薪计算" Tag="{x:Static models:CalculationMethod.Hourly}" />
+                    <ComboBoxItem Content="分钟计算" Tag="{x:Static models:CalculationMethod.Minute}" />
+                    <ComboBoxItem Content="手动金额" Tag="{x:Static models:CalculationMethod.Manual}" />
+                </ComboBox>
+
+                <Button Content="添加" Command="{Binding AddEntryCommand}" Padding="10,6" />
+            </WrapPanel>
+        </Border>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}" AutoGenerateColumns="False" Margin="0,10,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="项目" Binding="{Binding ProjectName}" Width="*" />
+                <DataGridTextColumn Header="制作人" Binding="{Binding Producer}" Width="120" />
+                <DataGridTextColumn Header="日期" Binding="{Binding FormattedDate}" Width="100" />
+                <DataGridTextColumn Header="时长" Binding="{Binding FormattedDuration}" Width="90" />
+                <DataGridTextColumn Header="金额" Binding="{Binding Amount}" Width="80" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Content="删除选中" Command="{Binding RemoveEntryCommand}" Padding="10,6" />
+        </StackPanel>
+    </Grid>
+</UserControl>

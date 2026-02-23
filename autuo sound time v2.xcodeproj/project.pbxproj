@@ -1,0 +1,562 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		229103282E194C5A00A4D97B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2291030C2E194C5900A4D97B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 229103132E194C5900A4D97B;
+			remoteInfo = "autuo sound time v2";
+		};
+		229103322E194C5A00A4D97B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2291030C2E194C5900A4D97B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 229103132E194C5900A4D97B;
+			remoteInfo = "autuo sound time v2";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		229103142E194C5900A4D97B /* autuo sound time v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "autuo sound time v2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		229103272E194C5A00A4D97B /* autuo sound time v2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "autuo sound time v2Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		229103312E194C5A00A4D97B /* autuo sound time v2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "autuo sound time v2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		229103162E194C5900A4D97B /* autuo sound time v2 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "autuo sound time v2";
+			sourceTree = "<group>";
+		};
+		2291032A2E194C5A00A4D97B /* autuo sound time v2Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "autuo sound time v2Tests";
+			sourceTree = "<group>";
+		};
+		229103342E194C5A00A4D97B /* autuo sound time v2UITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "autuo sound time v2UITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		229103112E194C5900A4D97B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		229103242E194C5A00A4D97B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2291032E2E194C5A00A4D97B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2291030B2E194C5900A4D97B = {
+			isa = PBXGroup;
+			children = (
+				229103162E194C5900A4D97B /* autuo sound time v2 */,
+				2291032A2E194C5A00A4D97B /* autuo sound time v2Tests */,
+				229103342E194C5A00A4D97B /* autuo sound time v2UITests */,
+				229103152E194C5900A4D97B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		229103152E194C5900A4D97B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				229103142E194C5900A4D97B /* autuo sound time v2.app */,
+				229103272E194C5A00A4D97B /* autuo sound time v2Tests.xctest */,
+				229103312E194C5A00A4D97B /* autuo sound time v2UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		229103132E194C5900A4D97B /* autuo sound time v2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2291033B2E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2" */;
+			buildPhases = (
+				229103102E194C5900A4D97B /* Sources */,
+				229103112E194C5900A4D97B /* Frameworks */,
+				229103122E194C5900A4D97B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				229103162E194C5900A4D97B /* autuo sound time v2 */,
+			);
+			name = "autuo sound time v2";
+			packageProductDependencies = (
+			);
+			productName = "autuo sound time v2";
+			productReference = 229103142E194C5900A4D97B /* autuo sound time v2.app */;
+			productType = "com.apple.product-type.application";
+		};
+		229103262E194C5A00A4D97B /* autuo sound time v2Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2291033E2E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2Tests" */;
+			buildPhases = (
+				229103232E194C5A00A4D97B /* Sources */,
+				229103242E194C5A00A4D97B /* Frameworks */,
+				229103252E194C5A00A4D97B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				229103292E194C5A00A4D97B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2291032A2E194C5A00A4D97B /* autuo sound time v2Tests */,
+			);
+			name = "autuo sound time v2Tests";
+			packageProductDependencies = (
+			);
+			productName = "autuo sound time v2Tests";
+			productReference = 229103272E194C5A00A4D97B /* autuo sound time v2Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		229103302E194C5A00A4D97B /* autuo sound time v2UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 229103412E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2UITests" */;
+			buildPhases = (
+				2291032D2E194C5A00A4D97B /* Sources */,
+				2291032E2E194C5A00A4D97B /* Frameworks */,
+				2291032F2E194C5A00A4D97B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				229103332E194C5A00A4D97B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				229103342E194C5A00A4D97B /* autuo sound time v2UITests */,
+			);
+			name = "autuo sound time v2UITests";
+			packageProductDependencies = (
+			);
+			productName = "autuo sound time v2UITests";
+			productReference = 229103312E194C5A00A4D97B /* autuo sound time v2UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2291030C2E194C5900A4D97B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					229103132E194C5900A4D97B = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					229103262E194C5A00A4D97B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 229103132E194C5900A4D97B;
+					};
+					229103302E194C5A00A4D97B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 229103132E194C5900A4D97B;
+					};
+				};
+			};
+			buildConfigurationList = 2291030F2E194C5900A4D97B /* Build configuration list for PBXProject "autuo sound time v2" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2291030B2E194C5900A4D97B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 229103152E194C5900A4D97B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				229103132E194C5900A4D97B /* autuo sound time v2 */,
+				229103262E194C5A00A4D97B /* autuo sound time v2Tests */,
+				229103302E194C5A00A4D97B /* autuo sound time v2UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		229103122E194C5900A4D97B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		229103252E194C5A00A4D97B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2291032F2E194C5A00A4D97B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		229103102E194C5900A4D97B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		229103232E194C5A00A4D97B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2291032D2E194C5A00A4D97B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		229103292E194C5A00A4D97B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 229103132E194C5900A4D97B /* autuo sound time v2 */;
+			targetProxy = 229103282E194C5A00A4D97B /* PBXContainerItemProxy */;
+		};
+		229103332E194C5A00A4D97B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 229103132E194C5900A4D97B /* autuo sound time v2 */;
+			targetProxy = 229103322E194C5A00A4D97B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		229103392E194C5A00A4D97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2291033A2E194C5A00A4D97B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		2291033C2E194C5A00A4D97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "autuo sound time v2/autuo_sound_time_v2.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3.3.0;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "时薪计算器-亿声永势";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 3.3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v3";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		2291033D2E194C5A00A4D97B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "autuo sound time v2/autuo_sound_time_v2.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3.3.0;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "时薪计算器-亿声永势";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 3.3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v3";
+				PRODUCT_NAME = "时薪计算器-亿声永势 V3";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		2291033F2E194C5A00A4D97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v2Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/autuo sound time v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/autuo sound time v2";
+			};
+			name = Debug;
+		};
+		229103402E194C5A00A4D97B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v2Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/autuo sound time v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/autuo sound time v2";
+			};
+			name = Release;
+		};
+		229103422E194C5A00A4D97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v2UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = "autuo sound time v2";
+			};
+			name = Debug;
+		};
+		229103432E194C5A00A4D97B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3M72NUHBGN;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ysys.autuo-sound-time-v2UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = "autuo sound time v2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2291030F2E194C5900A4D97B /* Build configuration list for PBXProject "autuo sound time v2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				229103392E194C5A00A4D97B /* Debug */,
+				2291033A2E194C5A00A4D97B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2291033B2E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2291033C2E194C5A00A4D97B /* Debug */,
+				2291033D2E194C5A00A4D97B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2291033E2E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2291033F2E194C5A00A4D97B /* Debug */,
+				229103402E194C5A00A4D97B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		229103412E194C5A00A4D97B /* Build configuration list for PBXNativeTarget "autuo sound time v2UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				229103422E194C5A00A4D97B /* Debug */,
+				229103432E194C5A00A4D97B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2291030C2E194C5900A4D97B /* Project object */;
+}

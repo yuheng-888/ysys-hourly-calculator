@@ -1,0 +1,20 @@
+<Application x:Class="AutoSoundTimeV3.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:AutoSoundTimeV3.ViewModels"
+             xmlns:views="clr-namespace:AutoSoundTimeV3.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <DataTemplate DataType="{x:Type vm:AutoModeViewModel}">
+            <views:AutoModeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManualModeViewModel}">
+            <views:ManualModeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TeamSettlementViewModel}">
+            <views:TeamSettlementView />
+        </DataTemplate>
+    </Application.Resources>
+</Application>

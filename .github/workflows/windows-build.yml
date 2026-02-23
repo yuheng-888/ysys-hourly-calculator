@@ -1,0 +1,40 @@
+name: Build Windows App
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'windows/**'
+      - '.github/workflows/windows-build.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        runtime: [win-x64, win-arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore "./windows/AutuoSoundTimeV3/AutuoSoundTimeV3.csproj"
+
+      - name: Publish
+        run: >-
+          dotnet publish "./windows/AutuoSoundTimeV3/AutuoSoundTimeV3.csproj"
+          -c Release -r ${{ matrix.runtime }}
+          --self-contained true
+          /p:PublishSingleFile=true
+          /p:PublishTrimmed=false
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutuoSoundTimeV3-${{ matrix.runtime }}
+          path: windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/${{ matrix.runtime }}/publish
