@@ -470,8 +470,8 @@ struct AudioDurationCalculatorApp: App {
                     AboutView()
                         .environment(\.themePalette, appSettings.themePalette)
                 }
+                .preferredColorScheme(appSettings.themePalette.colorScheme)
         }
-        .preferredColorScheme(appSettings.themePalette.colorScheme)
         .windowStyle(.titleBar)
         .commands {
             CommandGroup(after: .appInfo) {
@@ -860,7 +860,7 @@ struct MainContentView: View {
                 .id(appSettings.selectedTab)
             }
         }
-        .frame(minWidth: 850, minHeight: 600)
+        .frame(minWidth: 1000, minHeight: 600)
         .onOpenURL { url in
             handleURLScheme(url: url)
         }
