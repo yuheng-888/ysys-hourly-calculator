@@ -77,4 +77,4 @@ windows/AutuoSoundTimeV3/bin/Release/net8.0-windows/win-x64/publish
 最近更新摘要：  
 1. 新增主题系统（暗色 / 亮色 / 暖色），macOS 与 Windows 版本均可在设置中切换  
 2. 主窗口最小宽度调整为 1000，避免内容拥挤  
-完整记录见：`/Users/luyuyuan/Desktop/yisheng-scrm/autuo sound time v2/CHANGELOG.md`
+完整记录见：`CHANGELOG.md`
