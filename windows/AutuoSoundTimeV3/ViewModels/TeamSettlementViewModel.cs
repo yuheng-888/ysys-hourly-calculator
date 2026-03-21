@@ -9,6 +9,7 @@ namespace AutoSoundTimeV3.ViewModels;
 public class TeamSettlementViewModel : ObservableObject
 {
     private readonly TeamSettlementStore _store;
+    private readonly SettingsViewModel _settings;
 
     public ObservableCollection<SettlementEntry> Entries => _store.Entries;
 
@@ -46,15 +47,22 @@ public class TeamSettlementViewModel : ObservableObject
     public RelayCommand AddEntryCommand { get; }
     public RelayCommand RemoveEntryCommand { get; }
 
-    public TeamSettlementViewModel(TeamSettlementStore store)
+    public TeamSettlementViewModel(TeamSettlementStore store, SettingsViewModel settings)
     {
         _store = store;
+        _settings = settings;
+        ResetEntryForm();
         AddEntryCommand = new RelayCommand(_ => AddEntry());
         RemoveEntryCommand = new RelayCommand(_ => RemoveEntry());
     }
 
     private void AddEntry()
     {
+        string? normalizedProjectName = ProjectNameMemory.RememberedProjectName(ProjectName);
+        if (normalizedProjectName is null) return;
+        string normalizedProducer = Producer.Trim();
+        if (normalizedProducer.Length == 0) return;
+
         double.TryParse(Hours, out double h);
         double.TryParse(Minutes, out double m);
         double.TryParse(Seconds, out double s);
@@ -64,8 +72,8 @@ public class TeamSettlementViewModel : ObservableObject
 
         SettlementEntry entry = new()
         {
-            ProjectName = ProjectName,
-            Producer = Producer,
+            ProjectName = normalizedProjectName,
+            Producer = normalizedProducer,
             Date = Date,
             Duration = duration,
             Amount = amount,
@@ -73,11 +81,25 @@ public class TeamSettlementViewModel : ObservableObject
         };
 
         _store.Entries.Add(entry);
+        _settings.LastProjectName = normalizedProjectName;
+        ResetEntryForm();
     }
 
     private void RemoveEntry()
     {
         if (SelectedEntry == null) return;
         _store.Entries.Remove(SelectedEntry);
+    }
+
+    private void ResetEntryForm()
+    {
+        ProjectName = ProjectNameMemory.PrefilledProjectName(string.Empty, _settings.LastProjectName);
+        Producer = string.Empty;
+        Date = DateTime.Today;
+        Hours = string.Empty;
+        Minutes = string.Empty;
+        Seconds = string.Empty;
+        Amount = string.Empty;
+        Method = CalculationMethod.Hourly;
     }
 }

@@ -94,6 +94,7 @@ public class AutoModeViewModel : ObservableObject
         _store = store;
         _hourlyRate = settings.LastHourlyRate;
         _minuteRate = settings.LastMinuteRate;
+        _projectName = ProjectNameMemory.PrefilledProjectName(_projectName, settings.LastProjectName);
 
         AddFilesCommand = new RelayCommand(async _ => await AddFilesAsync());
         ClearFilesCommand = new RelayCommand(_ => ClearFiles());
@@ -156,12 +157,16 @@ public class AutoModeViewModel : ObservableObject
     private void AddToTeam()
     {
         if (TotalDuration.TotalSeconds <= 0 || CalculatedSalary <= 0) return;
+        string? normalizedProjectName = ProjectNameMemory.RememberedProjectName(ProjectName);
+        if (normalizedProjectName is null) return;
+        string normalizedProducer = Producer.Trim();
+        if (normalizedProducer.Length == 0) return;
 
         CalculationMethod method = SelectedUnit == DurationUnit.Hour ? CalculationMethod.Hourly : CalculationMethod.Minute;
         SettlementEntry entry = new()
         {
-            ProjectName = ProjectName,
-            Producer = Producer,
+            ProjectName = normalizedProjectName,
+            Producer = normalizedProducer,
             Date = CalculationDate,
             Duration = TotalDuration,
             Amount = CalculatedSalary,
@@ -169,5 +174,8 @@ public class AutoModeViewModel : ObservableObject
         };
 
         _store.Entries.Add(entry);
+        _settings.LastProjectName = normalizedProjectName;
+        ProjectName = normalizedProjectName;
+        Producer = string.Empty;
     }
 }

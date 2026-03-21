@@ -56,6 +56,12 @@ public class SettingsViewModel : ObservableObject
         set { if (_settings.LastMinuteRate == value) return; _settings.LastMinuteRate = value; Save(); RaisePropertyChanged(); }
     }
 
+    public string LastProjectName
+    {
+        get => _settings.LastProjectName;
+        set { if (_settings.LastProjectName == value) return; _settings.LastProjectName = value; Save(); RaisePropertyChanged(); }
+    }
+
     public AppTab SelectedTab
     {
         get => _settings.SelectedTab;

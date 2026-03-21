@@ -10,8 +10,24 @@ import Testing
 
 struct autuo_sound_time_v2Tests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func projectNameFieldUsesRememberedValueWhenCurrentInputIsBlank() async throws {
+        let resolved = ProjectNameMemory.prefilledProjectName(currentInput: "   ", rememberedProjectName: "有声书A")
+
+        #expect(resolved == "有声书A")
+    }
+
+    @Test func projectNameFieldPreservesCurrentInputWhenItExists() async throws {
+        let resolved = ProjectNameMemory.prefilledProjectName(currentInput: "新项目", rememberedProjectName: "旧项目")
+
+        #expect(resolved == "新项目")
+    }
+
+    @Test func rememberProjectNameTrimsWhitespaceAndRejectsBlankValues() async throws {
+        let remembered = ProjectNameMemory.rememberedProjectName(from: "  新项目  ")
+        let ignored = ProjectNameMemory.rememberedProjectName(from: "   ")
+
+        #expect(remembered == "新项目")
+        #expect(ignored == nil)
     }
 
 }

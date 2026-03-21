@@ -213,6 +213,17 @@ extension TimeInterval {
     }
 }
 
+enum ProjectNameMemory {
+    static func prefilledProjectName(currentInput: String, rememberedProjectName storedProjectName: String) -> String {
+        rememberedProjectName(from: currentInput) ?? rememberedProjectName(from: storedProjectName) ?? ""
+    }
+
+    static func rememberedProjectName(from projectName: String) -> String? {
+        let trimmedProjectName = projectName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedProjectName.isEmpty ? nil : trimmedProjectName
+    }
+}
+
 // MARK: - 全局枚举定义
 enum CalculationMethod: String, CaseIterable, Hashable, Codable {
     case hourly = "时薪计算"
@@ -403,6 +414,7 @@ class AppSettings: ObservableObject {
     // 费率记忆：保存上次使用的费率
     @AppStorage("lastHourlyRate") var lastHourlyRate: String = ""
     @AppStorage("lastMinuteRate") var lastMinuteRate: String = ""
+    @AppStorage("lastProjectName") var lastProjectName: String = ""
     
     var theme: AppTheme {
         AppTheme(rawValue: selectedTheme) ?? .dark
@@ -1149,6 +1161,12 @@ struct AutoModeCalculatorView: View {
         .onAppear {
             if hourlyRate.isEmpty { hourlyRate = appSettings.lastHourlyRate }
             if minuteRate.isEmpty { minuteRate = appSettings.lastMinuteRate }
+            if projectName.isEmpty {
+                projectName = ProjectNameMemory.prefilledProjectName(
+                    currentInput: projectName,
+                    rememberedProjectName: appSettings.lastProjectName
+                )
+            }
         }
     }
     
@@ -1569,7 +1587,9 @@ struct AutoModeCalculatorView: View {
                         }
                         .buttonStyle(RoundedBorderedProminentButtonStyle())
                         .tint(theme.accent)
-                        .disabled(projectName.isEmpty || producer.isEmpty || totalDuration == 0)
+                        .disabled(ProjectNameMemory.rememberedProjectName(from: projectName) == nil ||
+                                  producer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                  totalDuration == 0)
                     }
                     
                     if !appState.teamSettlementEntries.isEmpty {
@@ -1784,11 +1804,15 @@ struct AutoModeCalculatorView: View {
     }
     
     private func addToTeamSettlement() {
+        guard let normalizedProjectName = ProjectNameMemory.rememberedProjectName(from: projectName) else { return }
+        let normalizedProducer = producer.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalizedProducer.isEmpty else { return }
+
         let method: CalculationMethod = selectedTimeUnit == .hour ? .hourly : .minute
         
         let entry = SettlementEntry(
-            projectName: projectName,
-            producer: producer,
+            projectName: normalizedProjectName,
+            producer: normalizedProducer,
             date: Date(),
             duration: totalDuration,
             amount: calculatedSalary,
@@ -1796,7 +1820,8 @@ struct AutoModeCalculatorView: View {
         )
         
         appState.teamSettlementEntries.append(entry)
-        projectName = ""
+        appSettings.lastProjectName = normalizedProjectName
+        projectName = normalizedProjectName
         producer = ""
         
         // 使用 SwiftUI 横幅替代 NSAlert，避免阻塞主线程
@@ -2353,6 +2378,7 @@ struct TeamSettlementView: View {
                 
                 HStack {
                     Button(action: {
+                        prepareAddEntryForm()
                         uiState.showAddEntrySheet = true
                     }) {
                         Label("添加结算条目", systemImage: "plus")
@@ -2425,6 +2451,12 @@ struct TeamSettlementView: View {
         .onAppear {
             if uiState.hourlyRate.isEmpty {
                 uiState.hourlyRate = appSettings.lastHourlyRate
+            }
+            if uiState.projectName.isEmpty {
+                uiState.projectName = ProjectNameMemory.prefilledProjectName(
+                    currentInput: uiState.projectName,
+                    rememberedProjectName: appSettings.lastProjectName
+                )
             }
         }
     }
@@ -2864,7 +2896,8 @@ struct TeamSettlementView: View {
                         addSettlementEntry()
                     }
                     .buttonStyle(RoundedBorderedProminentButtonStyle())
-                    .disabled(uiState.projectName.isEmpty || uiState.producer.isEmpty ||
+                    .disabled(ProjectNameMemory.rememberedProjectName(from: uiState.projectName) == nil ||
+                              uiState.producer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
                               (uiState.calculationMethod != .manual &&
                                (uiState.durationHours.isEmpty &&
                                 uiState.durationMinutes.isEmpty &&
@@ -2881,6 +2914,10 @@ struct TeamSettlementView: View {
     // MARK: - 团队结算业务逻辑方法
     
     private func addSettlementEntry() {
+        guard let normalizedProjectName = ProjectNameMemory.rememberedProjectName(from: uiState.projectName) else { return }
+        let normalizedProducer = uiState.producer.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalizedProducer.isEmpty else { return }
+
         var entryAmount = 0.0
         var entryDuration = 0.0
         
@@ -2906,8 +2943,8 @@ struct TeamSettlementView: View {
         }
         
         let entry = SettlementEntry(
-            projectName: uiState.projectName,
-            producer: uiState.producer,
+            projectName: normalizedProjectName,
+            producer: normalizedProducer,
             date: uiState.date,
             duration: entryDuration,
             amount: entryAmount,
@@ -2915,6 +2952,7 @@ struct TeamSettlementView: View {
         )
         
         appState.teamSettlementEntries.append(entry)
+        appSettings.lastProjectName = normalizedProjectName
         uiState.showAddEntrySheet = false
         resetForm()
     }
@@ -2972,6 +3010,18 @@ struct TeamSettlementView: View {
     
     private func resetForm() {
         uiState = UIState()
+        prepareAddEntryForm()
+    }
+
+    private func prepareAddEntryForm() {
+        uiState.projectName = ProjectNameMemory.prefilledProjectName(
+            currentInput: uiState.projectName,
+            rememberedProjectName: appSettings.lastProjectName
+        )
+
+        if uiState.hourlyRate.isEmpty {
+            uiState.hourlyRate = appSettings.lastHourlyRate
+        }
     }
 
     // 复制到剪贴板

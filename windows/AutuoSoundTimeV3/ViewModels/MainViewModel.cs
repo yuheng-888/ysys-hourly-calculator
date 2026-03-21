@@ -45,7 +45,7 @@ public class MainViewModel : ObservableObject
         Settings = new SettingsViewModel();
         AutoMode = new AutoModeViewModel(Settings, _store);
         ManualMode = new ManualModeViewModel(Settings);
-        TeamMode = new TeamSettlementViewModel(_store);
+        TeamMode = new TeamSettlementViewModel(_store, Settings);
 
         _selectedTab = Settings.SelectedTab;
 
